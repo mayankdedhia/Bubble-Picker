@@ -74,7 +74,7 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
 
         val canvas = Canvas(bitmap)
 
-        if (isSelected) drawImage(canvas)
+        if (isSelected || pickerItem.showImageAlways) drawImage(canvas)
         drawBackground(canvas, isSelected)
         drawIcon(canvas)
         drawText(canvas)
@@ -87,7 +87,7 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
         bgPaint.style = Paint.Style.FILL
         pickerItem.color?.let { bgPaint.color = pickerItem.color!! }
         pickerItem.gradient?.let { bgPaint.shader = gradient }
-        if (withImage) bgPaint.alpha = (pickerItem.overlayAlpha * 255).toInt()
+        if (withImage || pickerItem.showImageAlways) bgPaint.alpha = (pickerItem.overlayAlpha * 255).toInt()
         canvas.drawRect(0f, 0f, bitmapSize, bitmapSize, bgPaint)
     }
 
