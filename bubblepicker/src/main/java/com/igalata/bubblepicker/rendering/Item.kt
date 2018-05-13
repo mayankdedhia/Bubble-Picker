@@ -53,6 +53,18 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
             }
         }
 
+    private val selectedGradient: LinearGradient?
+        get() {
+            return pickerItem.selectedGradient?.let {
+                val horizontal = it.direction == BubbleGradient.HORIZONTAL
+                LinearGradient(if (horizontal) 0f else bitmapSize / 2f,
+                        if (horizontal) bitmapSize / 2f else 0f,
+                        if (horizontal) bitmapSize else bitmapSize / 2f,
+                        if (horizontal) bitmapSize / 2f else bitmapSize,
+                        it.startColor, it.endColor, Shader.TileMode.CLAMP)
+            }
+        }
+
     fun drawItself(programId: Int, index: Int, scaleX: Float, scaleY: Float) {
         glActiveTexture(GL_TEXTURE)
         glBindTexture(GL_TEXTURE_2D, currentTexture)
@@ -86,7 +98,7 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
         val bgPaint = Paint()
         bgPaint.style = Paint.Style.FILL
         pickerItem.color?.let { bgPaint.color = pickerItem.color!! }
-        pickerItem.gradient?.let { bgPaint.shader = gradient }
+        pickerItem.gradient?.let { bgPaint.shader = if (withImage) selectedGradient else gradient }
         if (withImage || pickerItem.showImageAlways) bgPaint.alpha = (pickerItem.overlayAlpha * 255).toInt()
         canvas.drawRect(0f, 0f, bitmapSize, bitmapSize, bgPaint)
     }
