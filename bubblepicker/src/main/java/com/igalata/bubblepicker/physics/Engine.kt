@@ -37,7 +37,7 @@ object Engine {
     private var increasedGravity = 55f
     private var gravityCenter = Vec2(0f, 0f)
     private val currentGravity: Float
-        get() = if (touch) increasedGravity else gravity
+        get() = if (touch) increasedGravity else increasedGravity
     private val toBeResized = ArrayList<Item>()
     private val startX
         get() = if (centerImmediately) 0.5f else 2.2f
